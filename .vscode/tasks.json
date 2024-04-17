@@ -22,7 +22,9 @@
         ////////////////////////////////////
         // Own src
         ////////////////////////////////////
-        "${workspaceFolder}/src/ia/gpu_automata.cpp",
+        "${workspaceFolder}/src/ia/gpu_helper.cpp",
+        "${workspaceFolder}/src/ia/conway.cpp",
+        "${workspaceFolder}/src/ia/smooth_life.cpp",
         "${workspaceFolder}/src/main.cpp",
         ///////////////////////////////////
         // Salida de objetos
@@ -83,7 +85,9 @@
         ////////////////////////////////////
         // Own src
         ////////////////////////////////////
-        "${workspaceFolder}/src/ia/gpu_automata.cpp",
+        "${workspaceFolder}/src/ia/gpu_helper.cpp",
+        "${workspaceFolder}/src/ia/conway.cpp",
+        "${workspaceFolder}/src/ia/smooth_life.cpp",
         "${workspaceFolder}/src/main.cpp",
         ///////////////////////////////////
         // Salida de objetos

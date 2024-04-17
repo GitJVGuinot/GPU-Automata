@@ -1,5 +1,5 @@
 #include <engine/jam_engine.h>
-#include "ia/gpu_automata.h"
+#include "ia/ia.h"
 
 static f32 win_x = 512;
 static f32 win_y = 512;
@@ -26,7 +26,8 @@ static Camera camera;
 static Mesh* quad = nullptr;
 static Material* img = nullptr;
 
-static GPU_Automata automata(GPU_Automata::Type::k_Conways);
+static Conway conway;
+static SmoothLife smooth_life;
 
 static TimeCont timer_;
 
@@ -42,7 +43,7 @@ void UserInit(s32 argc, byte* argv[], void*)
   quad = JAM_Engine::GetMesh(Mesh::Platonic::k_Quad);
 
   // GPU Automata
-  automata.init(Math::Vec2(win_x, win_y));
+  smooth_life.init(Math::Vec2(win_x, win_y));
 
   Transform tr;
   tr.scale(Math::Vec3(1.0f));
@@ -58,8 +59,8 @@ void UserInit(s32 argc, byte* argv[], void*)
 
 void UserUpdate(void*)
 {
-  automata.update();
-  automata.imgui();
+  smooth_life.update();
+  smooth_life.imgui();
 
   if (JAM_Engine::InputDown(Inputs::Key::Key_F5))
     JAM_Engine::RechargeShaders();
@@ -67,16 +68,16 @@ void UserUpdate(void*)
   JAM_Engine::BeginRender(&camera);
   
   img->use();
-  img->setTexture("Image", automata.currentTexture(), 0);
+  img->setTexture("Image", smooth_life.currentTexture(), 0);
   JAM_Engine::Render("Quad");
   
   JAM_Engine::EndRender();
 
   if (JAM_Engine::InputDown(Inputs::Key::Key_R))
-    automata.reset();
+    smooth_life.reset();
 
   if(timer_.getElapsedTime(TimeCont::Precision::milliseconds) < 10)
-    automata.reset();
+    smooth_life.reset();
 }
 
 void UserClean(void*) {}
