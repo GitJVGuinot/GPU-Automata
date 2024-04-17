@@ -1,0 +1,127 @@
+
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "cppbuild",
+      "label": "Compiler (Release)",
+      "command": "g++",
+      "args": [
+        // Flags
+        ////////////////////////////////////
+        "-fdiagnostics-color=always",
+        "-O3",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Werror",
+        "-m64",
+        "-Bstatic",
+        "-std=c++20",
+        ////////////////////////////////////
+        // Own src
+        ////////////////////////////////////
+        "${workspaceFolder}/src/ia/gpu_automata.cpp",
+        "${workspaceFolder}/src/main.cpp",
+        ///////////////////////////////////
+        // Salida de objetos
+        ////////////////////////////////////
+        "-o",
+        "${workspaceFolder}/bin/linux/app.elf", // Ejecutable linux
+        ////////////////////////////////////
+        // Includes
+        ////////////////////////////////////
+        "-I${workspaceFolder}/include",
+        "-I${workspaceFolder}/deps/include",
+        ////////////////////////////////////
+        // Libs
+        ////////////////////////////////////
+        "-L${workspaceFolder}/deps/libs/jam_engine",
+        "-l:JAM_Engine_x64.a",
+        "-lGL",
+        "-lGLEW",
+        "-lglfw",
+        "-lopenal",
+        ////////////////////////////////////
+        // Defines
+        ////////////////////////////////////
+        "-DNDEBUG",
+        "-D_THREAD_SAFE",
+        "-D_REENTRANT"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/bin/linux"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "compilador: g++ (Release)"
+    },
+    {
+      "type": "cppbuild",
+      "label": "Compiler (Debug)",
+      "command": "g++",
+      "args": [
+        // Flags
+        ////////////////////////////////////
+        "-fdiagnostics-color=always",
+        "-g3",
+        "-O0",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Wconversion",
+        "-Werror",
+        "-m64",
+        "-Bstatic",
+        "-std=c++20",
+        ////////////////////////////////////
+        // Own src
+        ////////////////////////////////////
+        "${workspaceFolder}/src/ia/gpu_automata.cpp",
+        "${workspaceFolder}/src/main.cpp",
+        ///////////////////////////////////
+        // Salida de objetos
+        ////////////////////////////////////
+        "-o",
+        "${workspaceFolder}/bin/linux/app_d.elf", // Ejecutable linux
+        ////////////////////////////////////
+        // Includes
+        ////////////////////////////////////
+        "-I${workspaceFolder}/include",
+        "-I${workspaceFolder}/deps/include",
+        ////////////////////////////////////
+        // Libs
+        ////////////////////////////////////
+        "-L${workspaceFolder}/deps/libs/jam_engine",
+        "-l:JAM_Engine_x64.a",
+        "-lGL",
+        "-lGLEW",
+        "-lglfw",
+        "-lopenal",
+        ////////////////////////////////////
+        // Defines
+        ////////////////////////////////////
+        "-DDEBUG",
+        "-D_THREAD_SAFE",
+        "-D_REENTRANT"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/bin/linux"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "compilador: g++ (Debug)"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+
+{
+  "configurations": [
+    {
+      "name": "Launcher (Release)",
+      "type": "cppdbg",
+      "request": "launch",
+      "preLaunchTask": "Compiler (Release)",
+        "program": "${workspaceFolder}/bin/linux/app.elf", // Ubicacion del archivo ejecutable
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/bin/linux",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Habilitar la impresión con sangría para gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Establecer tipo de desensamblado en Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "Launcher (Debug)",
+      "type": "cppdbg",
+      "request": "launch",
+      "preLaunchTask": "Compiler (Debug)",
+        "program": "${workspaceFolder}/bin/linux/app_d.elf", // Ubicacion del archivo ejecutable
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/bin/linux",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Habilitar la impresión con sangría para gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Establecer tipo de desensamblado en Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
