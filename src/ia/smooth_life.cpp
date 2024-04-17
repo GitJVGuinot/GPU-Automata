@@ -1,5 +1,6 @@
 #include "ia/smooth_life.h"
 #include "ia/gpu_helper.h"
+#include "ia/binds.h"
 
 #define SECTORS 4
 
@@ -14,11 +15,6 @@
   static_cast<u32>(x) * static_cast<u32>(max_y) * static_cast<u32>(max_z) + \
       static_cast<u32>(y) * static_cast<u32>(max_z) +                       \
       static_cast<u32>(z)
-
-#define COUNTER_BIND 0
-#define INDICES_BIND 1
-#define CURR_IMG_BIND 2
-#define PREV_IMG_BIND 3
 
 void CheckComputeResults(GLuint counter_ssbo, GLuint prev_data_id, u32 width, u32 height)
 {

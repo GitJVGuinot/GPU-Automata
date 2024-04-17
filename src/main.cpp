@@ -26,10 +26,12 @@ static Camera camera;
 static Mesh *quad = nullptr;
 static Material *img = nullptr;
 
-static int mode = 0;
+const static int max_modes = 3;
+static int mode = 3;
 static Conway conway;
 static SmoothLife smooth_life;
 static Lenia lenia;
+static LeniaOp lenia_op;
 
 void ChangeMode(int &mode, int signess, int min, int max)
 {
@@ -58,6 +60,7 @@ void UserInit(s32 argc, byte *argv[], void *)
   conway.init(Math::Vec2(win_x, win_y));
   smooth_life.init(Math::Vec2(win_x, win_y));
   lenia.init(Math::Vec2(win_x, win_y));
+  lenia_op.init(Math::Vec2(win_x, win_y));
 
   Transform tr;
   tr.scale(Math::Vec3(1.0f));
@@ -92,6 +95,13 @@ void UserUpdate(void *)
     texture_id = lenia.currentTexture();
   }
 
+  if (mode == 3)
+  {
+    lenia_op.update();
+    lenia_op.imgui();
+    texture_id = lenia_op.currentTexture();
+  }
+
   if (JAM_Engine::InputDown(Inputs::Key::Key_F5))
     JAM_Engine::RechargeShaders();
 
@@ -111,12 +121,14 @@ void UserUpdate(void *)
       smooth_life.reset();
     if (mode == 2)
       lenia.reset();
+    if (mode == 3)
+      lenia_op.reset();
   }
 
   if (JAM_Engine::InputDown(Inputs::Key::Key_Left))
-    ChangeMode(mode, -1, 0, 2);
+    ChangeMode(mode, -1, 0, max_modes);
   if (JAM_Engine::InputDown(Inputs::Key::Key_Right))
-    ChangeMode(mode, 1, 0, 2);
+    ChangeMode(mode, 1, 0, max_modes);
 }
 
 void UserClean(void *) {}

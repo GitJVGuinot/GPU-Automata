@@ -23,6 +23,7 @@
         // Own src
         ////////////////////////////////////
         "${workspaceFolder}/src/ia/lenia.cpp",
+        "${workspaceFolder}/src/ia/lenia_op.cpp",
         "${workspaceFolder}/src/ia/conway.cpp",
         "${workspaceFolder}/src/ia/gpu_helper.cpp",
         "${workspaceFolder}/src/ia/smooth_life.cpp",
@@ -87,6 +88,7 @@
         // Own src
         ////////////////////////////////////
         "${workspaceFolder}/src/ia/lenia.cpp",
+        "${workspaceFolder}/src/ia/lenia_op.cpp",
         "${workspaceFolder}/src/ia/conway.cpp",
         "${workspaceFolder}/src/ia/gpu_helper.cpp",
         "${workspaceFolder}/src/ia/smooth_life.cpp",

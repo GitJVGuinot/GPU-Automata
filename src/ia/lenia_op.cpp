@@ -1,10 +1,10 @@
-#include "ia/lenia.h"
+#include "ia/lenia_op.h"
 #include "ia/gpu_helper.h"
 #include "ia/binds.h"
 
-Lenia::Lenia() {}
+LeniaOp::LeniaOp() {}
 
-void Lenia::init(Math::Vec2 win)
+void LeniaOp::init(Math::Vec2 win)
 {
   width_ = static_cast<u32>(win.x);
   height_ = static_cast<u32>(win.y);
@@ -26,7 +26,7 @@ void Lenia::init(Math::Vec2 win)
 
   compileShaders();
 
-  // Default Lenia config
+  // Default LeniaOp config
   radius_ = 15.0f;
   dt_ = 5.0f;
   mu_ = 0.14f;
@@ -39,14 +39,14 @@ void Lenia::init(Math::Vec2 win)
   reset();
 }
 
-Lenia::~Lenia() {}
+LeniaOp::~LeniaOp() {}
 
-void Lenia::swap()
+void LeniaOp::swap()
 {
   std::swap(current_data_id_, prev_data_id_);
 }
 
-void Lenia::update()
+void LeniaOp::update()
 {
   update_timer_.startTime();
   swap();
@@ -80,12 +80,12 @@ void Lenia::update()
   update_timer_.stopTime();
 }
 
-void Lenia::imgui()
+void LeniaOp::imgui()
 {
   ImGui::Begin("GPU Automata");
 
   ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
-  ImGui::Text("Type - Lenia");
+  ImGui::Text("Type - LeniaOp");
 
   ImGui::SliderFloat("Radius", &radius_, 10.0f, 25.0f);
   ImGui::SliderFloat("Delta Time", &dt_, 5.0f, 15.0f);
@@ -97,7 +97,7 @@ void Lenia::imgui()
   ImGui::End();
 }
 
-void Lenia::reset()
+void LeniaOp::reset()
 {
   u_byte *data = reinterpret_cast<u_byte *>(std::calloc(width_ * height_ * 4, sizeof(u_byte)));
 
@@ -126,7 +126,7 @@ void Lenia::reset()
   DESTROY(data);
 }
 
-void Lenia::clean()
+void LeniaOp::clean()
 {
   u_byte *data = reinterpret_cast<u_byte *>(std::calloc(width_ * height_ * 4, sizeof(u_byte)));
 
@@ -144,9 +144,9 @@ void Lenia::clean()
   DESTROY(data);
 }
 
-u32 Lenia::currentTexture() { return current_data_id_; }
+u32 LeniaOp::currentTexture() { return current_data_id_; }
 
-void Lenia::compileShaders()
+void LeniaOp::compileShaders()
 {
   // Compute shader
   /////////////////////////////////////////////////////////////////////////////

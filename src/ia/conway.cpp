@@ -1,8 +1,6 @@
 #include "ia/conway.h"
 #include "ia/gpu_helper.h"
-
-#define CURR_IMG_BIND 2
-#define PREV_IMG_BIND 3
+#include "ia/binds.h"
 
 Conway::Conway() {}
 
