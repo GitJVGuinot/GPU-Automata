@@ -59,4 +59,6 @@ struct Counter
   float live_;
   float count_;
 };
+
+float GaussBell(float x, float m, float s){ return exp(-(x - m) * (x - m) / s / s / 2.0); }
 )";

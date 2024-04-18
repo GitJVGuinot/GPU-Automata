@@ -10,8 +10,6 @@ uniform float u_sigma;
 uniform float u_rho;
 uniform float u_omega;
 
-float GaussBell(float x, float m, float s){ return exp(-(x - m) * (x - m) / s / s / 2.0); }
-
 vec2 Convolution(ivec2 coords)
 {
   float sum = 0;
