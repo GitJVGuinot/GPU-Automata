@@ -7,6 +7,7 @@
 
 #define SECTORS 4
 
+#define MAX_RADIUS 20
 #define O_RADIUS 12.0f
 #define I_RADIUS 1.44f
 
@@ -15,11 +16,19 @@
 #define C_WIDTH 512
 #define C_HEIGHT 512
 #define C_DEPTH (static_cast<s32>(NEAR_NEIGHBORS + (O_RADIUS * SECTORS)))
+#define TOTAL_LINES(rad) (static_cast<u32>((rad * 2) + 1))
+#define TOTAL_COLUMNS(rad) (static_cast<u32>((rad * 2) + 1))
 
 #define ARRAY_3D_INDEX(x, y, z, max_y, max_z)                               \
   static_cast<u32>(x) * static_cast<u32>(max_y) * static_cast<u32>(max_z) + \
       static_cast<u32>(y) * static_cast<u32>(max_z) +                       \
       static_cast<u32>(z)
+
+struct Counter
+{
+  float live_;
+  float count_;
+};
 
 const char defines[] = R"(
 #version 460
@@ -31,6 +40,7 @@ const char defines[] = R"(
 
 #define SECTORS 4
 
+#define MAX_RADIUS 20.0
 #define O_RADIUS 12.0
 #define I_RADIUS 1.44
 
@@ -39,6 +49,14 @@ const char defines[] = R"(
 #define C_WIDTH 512
 #define C_HEIGHT 512
 #define C_DEPTH int(NEAR_NEIGHBORS + (O_RADIUS * SECTORS))
+#define TOTAL_LINES(rad) ((rad * 2) + 1)
+#define TOTAL_COLUMNS(rad) ((rad * 2) + 1)
 
 #define ARRAY_3D_INDEX(x, y, z, max_y, max_z) int((x *  max_y * max_z) + (y * max_z) + (z))
+
+struct Counter
+{
+  float live_;
+  float count_;
+};
 )";

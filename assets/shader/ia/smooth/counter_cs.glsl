@@ -1,11 +1,5 @@
 layout (local_size_x = 1, local_size_y = C_WIDTH, local_size_z = 1) in;
 
-struct Counter
-{
-  float live_;
-  uint count_;
-};
-
 layout (binding = COUNTER_BIND, std430) buffer CounterBlock { Counter data_[]; };
 layout (binding = INDICES_BIND, std430) buffer IndicesBlock { vec2 indices_[]; };
 

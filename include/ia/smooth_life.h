@@ -6,12 +6,6 @@
 class SmoothLife
 {
 public:
-  struct Counter
-  {
-    f32 live_;
-    u32 count_;
-  };
-
   SmoothLife();
   void init(Math::Vec2 win);
   ~SmoothLife();

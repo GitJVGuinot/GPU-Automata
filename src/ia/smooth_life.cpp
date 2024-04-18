@@ -5,8 +5,8 @@
 void CheckComputeResults(GLuint counter_ssbo, GLuint prev_data_id, u32 width, u32 height)
 {
   // Use glGetNamedBufferSubData to retrieve data from the buffer for debugging
-  SmoothLife::Counter *data = reinterpret_cast<SmoothLife::Counter *>(std::calloc(width * height, sizeof(SmoothLife::Counter)));
-  glGetNamedBufferSubData(counter_ssbo, 0, width * height * sizeof(SmoothLife::Counter), data);
+  Counter *data = reinterpret_cast<Counter *>(std::calloc(width * height, sizeof(Counter)));
+  glGetNamedBufferSubData(counter_ssbo, 0, width * height * sizeof(Counter), data);
 
   // Use glGetTexImage to retrieve data from the image for debugging
   u_byte *prev_image_data = reinterpret_cast<u_byte *>(std::calloc(width * height * 4, sizeof(u_byte)));
