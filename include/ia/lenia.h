@@ -30,6 +30,7 @@ private:
   void swap();
 
   TimeCont update_timer_;
+  u32 loops_;
 
   u32 compute_program_;
 

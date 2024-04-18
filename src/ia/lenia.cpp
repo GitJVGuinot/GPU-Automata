@@ -6,6 +6,7 @@ Lenia::Lenia() {}
 
 void Lenia::init(Math::Vec2 win)
 {
+  loops_ = 0;
   width_ = static_cast<u32>(win.x);
   height_ = static_cast<u32>(win.y);
 
@@ -49,7 +50,10 @@ void Lenia::swap()
 void Lenia::update()
 {
   update_timer_.startTime();
+  loops_++;
+
   swap();
+  
   GLenum error = GL_NO_ERROR;
 
   // GPU Automata
@@ -84,8 +88,9 @@ void Lenia::imgui()
 {
   ImGui::Begin("GPU Automata");
 
-  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
   ImGui::Text("Type - Lenia");
+  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
+  ImGui::Text("Generation: %d", loops_);
 
   ImGui::SliderFloat("Radius", &radius_, 10.0f, 25.0f);
   ImGui::SliderFloat("Delta Time", &dt_, 5.0f, 15.0f);
@@ -99,6 +104,7 @@ void Lenia::imgui()
 
 void Lenia::reset()
 {
+  loops_ = 0;
   u_byte *data = reinterpret_cast<u_byte *>(std::calloc(width_ * height_ * 4, sizeof(u_byte)));
 
   if (!data)

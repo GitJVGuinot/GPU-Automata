@@ -23,6 +23,7 @@ private:
   void swap();
 
   TimeCont update_timer_;
+  u32 loops_;
 
   u32 pre_compute_program_, compute_program_;
 

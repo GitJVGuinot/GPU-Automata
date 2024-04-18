@@ -21,6 +21,7 @@ SmoothLife::SmoothLife() {}
 
 void SmoothLife::init(Math::Vec2 win)
 {
+  loops_ = 0;
   width_ = static_cast<u32>(win.x);
   height_ = static_cast<u32>(win.y);
   outter_rad_ = O_RADIUS;
@@ -131,6 +132,8 @@ void SmoothLife::swap()
 void SmoothLife::update()
 {
   update_timer_.startTime();
+  loops_++;
+
   swap();
   GLenum error = GL_NO_ERROR;
 
@@ -180,8 +183,9 @@ void SmoothLife::imgui()
 {
   ImGui::Begin("GPU Automata");
 
-  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
   ImGui::Text("Type - Smooth life");
+  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
+  ImGui::Text("Generation: %d", loops_);
 
   ImGui::Text("Radius: %.1f", O_RADIUS);
 
@@ -190,6 +194,7 @@ void SmoothLife::imgui()
 
 void SmoothLife::reset()
 {
+  loops_ = 0;
   u_byte *data = reinterpret_cast<u_byte *>(std::calloc(width_ * height_ * 4, sizeof(u_byte)));
 
   if (!data)

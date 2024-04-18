@@ -18,7 +18,7 @@ public:
 
   u32 currentTexture();
 
-  float radius_;
+  s32 radius_;
   float dt_;
   float mu_;
   float sigma_;
@@ -30,7 +30,9 @@ private:
   void swap();
 
   TimeCont update_timer_;
+  u32 loops_;
 
+  u32 counter_ssbo_;
   u32 pre_compute_program_, compute_program_;
 
   u32 width_, height_;

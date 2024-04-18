@@ -1,4 +1,4 @@
-#define SCALAR_SIZE 2 // Only to render
+#define SCALAR_SIZE 2.5f // Only to render
 
 #define COUNTER_BIND 0
 #define INDICES_BIND 1

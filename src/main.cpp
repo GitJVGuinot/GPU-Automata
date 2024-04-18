@@ -1,8 +1,8 @@
 #include <engine/jam_engine.h>
 #include "ia/ia.h"
 
-static f32 win_x = C_WIDTH;
-static f32 win_y = C_HEIGHT;
+static f32 win_x = C_WIDTH * SCALAR_SIZE;
+static f32 win_y = C_HEIGHT *SCALAR_SIZE;
 
 static const Camera::CamConfig config = {
     .camera_render_type_ = Camera::RenderType::Orthographic,
@@ -10,10 +10,10 @@ static const Camera::CamConfig config = {
     .cam_win_ = Math::Vec2(win_x, win_y),
     .pos_ = Math::Vec3(0.0f, 0.0f, 1.0f),
     .target_ = Math::Vec3::zero,
-    .right_ = 0.5f * SCALAR_SIZE,
-    .left_ = -0.5f * SCALAR_SIZE,
-    .top_ = 0.5f * SCALAR_SIZE,
-    .bottom_ = -0.5f * SCALAR_SIZE,
+    .right_ = 0.5f,
+    .left_ = -0.5f,
+    .top_ = 0.5f,
+    .bottom_ = -0.5f,
     .GetMesh = &JAM_Engine::GetMesh,
     .UploadMesh = &JAM_Engine::UploadCustomMesh,
     .WheelScroll = &JAM_Engine::WheelScroll,
@@ -57,13 +57,13 @@ void UserInit(s32 argc, byte *argv[], void *)
   quad = JAM_Engine::GetMesh(Mesh::Platonic::k_Quad);
 
   // GPU Automata
-  conway.init(Math::Vec2(win_x, win_y));
-  smooth_life.init(Math::Vec2(win_x, win_y));
-  lenia.init(Math::Vec2(win_x, win_y));
-  lenia_op.init(Math::Vec2(win_x, win_y));
+  conway.init(Math::Vec2(C_WIDTH, C_HEIGHT));
+  smooth_life.init(Math::Vec2(C_WIDTH, C_HEIGHT));
+  lenia.init(Math::Vec2(C_WIDTH, C_HEIGHT));
+  lenia_op.init(Math::Vec2(C_WIDTH, C_HEIGHT));
 
   Transform tr;
-  tr.scale(Math::Vec3(SCALAR_SIZE));
+  tr.scale(Math::Vec3(1.0f));
   tr.rotate(Math::Vec3(Math::MathUtils::AngleToRads(90.0f), 0.0f, 0.0f));
   EM->newEntity("Quad");
   EM->setComponent(EM->getId("Quad"), img);
