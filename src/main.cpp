@@ -1,8 +1,8 @@
 #include <engine/jam_engine.h>
 #include "ia/ia.h"
 
-static f32 win_x = 512;
-static f32 win_y = 512;
+static f32 win_x = C_WIDTH;
+static f32 win_y = C_HEIGHT;
 
 static const Camera::CamConfig config = {
     .camera_render_type_ = Camera::RenderType::Orthographic,
@@ -10,10 +10,10 @@ static const Camera::CamConfig config = {
     .cam_win_ = Math::Vec2(win_x, win_y),
     .pos_ = Math::Vec3(0.0f, 0.0f, 1.0f),
     .target_ = Math::Vec3::zero,
-    .right_ = 0.5f,
-    .left_ = -0.5f,
-    .top_ = 0.5f,
-    .bottom_ = -0.5f,
+    .right_ = 0.5f * SCALAR_SIZE,
+    .left_ = -0.5f * SCALAR_SIZE,
+    .top_ = 0.5f * SCALAR_SIZE,
+    .bottom_ = -0.5f * SCALAR_SIZE,
     .GetMesh = &JAM_Engine::GetMesh,
     .UploadMesh = &JAM_Engine::UploadCustomMesh,
     .WheelScroll = &JAM_Engine::WheelScroll,
@@ -27,7 +27,7 @@ static Mesh *quad = nullptr;
 static Material *img = nullptr;
 
 const static int max_modes = 3;
-static int mode = 3;
+static int mode = 0;
 static Conway conway;
 static SmoothLife smooth_life;
 static Lenia lenia;
@@ -63,7 +63,7 @@ void UserInit(s32 argc, byte *argv[], void *)
   lenia_op.init(Math::Vec2(win_x, win_y));
 
   Transform tr;
-  tr.scale(Math::Vec3(1.0f));
+  tr.scale(Math::Vec3(SCALAR_SIZE));
   tr.rotate(Math::Vec3(Math::MathUtils::AngleToRads(90.0f), 0.0f, 0.0f));
   EM->newEntity("Quad");
   EM->setComponent(EM->getId("Quad"), img);

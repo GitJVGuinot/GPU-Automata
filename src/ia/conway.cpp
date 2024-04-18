@@ -1,6 +1,6 @@
 #include "ia/conway.h"
 #include "ia/gpu_helper.h"
-#include "ia/binds.h"
+#include "ia/defines.h"
 
 Conway::Conway() {}
 
@@ -129,9 +129,9 @@ void Conway::compileShaders()
 {
   // Compute shader
   /////////////////////////////////////////////////////////////////////////////
-  std::string conway_string = LoadSourceFromFile(SHADER("ia/conway/conway_cs.glsl"));
+  std::string conway_string = defines + LoadSourceFromFile(SHADER("ia/conway/conway_cs.glsl"));
   const char *conway_cs = conway_string.c_str();
-  GLuint compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, conway_cs, "compute shader");
-  compute_program_ = GPUHelper::CreateProgram(compute_shader, "compute program");
+  GLuint compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, conway_cs, "conway shader");
+  compute_program_ = GPUHelper::CreateProgram(compute_shader, "conway program");
   /////////////////////////////////////////////////////////////////////////////
 }

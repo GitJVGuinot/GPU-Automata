@@ -31,7 +31,7 @@ private:
 
   TimeCont update_timer_;
 
-  u32 pre_compute_program_, compute_program_;
+  u32 compute_program_;
 
   u32 width_, height_;
 

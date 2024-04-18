@@ -1,4 +1,0 @@
-#define COUNTER_BIND 0
-#define INDICES_BIND 1
-#define CURR_IMG_BIND 2
-#define PREV_IMG_BIND 3

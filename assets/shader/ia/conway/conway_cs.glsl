@@ -1,10 +1,3 @@
-#version 460 core
-
-#define COUNTER_BIND 0
-#define INDICES_BIND 1
-#define CURR_IMG_BIND 2
-#define PREV_IMG_BIND 3
-
 layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
 
 layout (binding = CURR_IMG_BIND, rgba8) writeonly uniform image2D current_image;

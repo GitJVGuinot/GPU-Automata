@@ -1,6 +1,6 @@
 #include "ia/lenia_op.h"
 #include "ia/gpu_helper.h"
-#include "ia/binds.h"
+#include "ia/defines.h"
 
 LeniaOp::LeniaOp() {}
 
@@ -85,9 +85,9 @@ void LeniaOp::imgui()
   ImGui::Begin("GPU Automata");
 
   ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
-  ImGui::Text("Type - LeniaOp");
+  ImGui::Text("Type - Lenia optimized");
 
-  ImGui::SliderFloat("Radius", &radius_, 10.0f, 25.0f);
+  ImGui::SliderFloat("Radius", &radius_, 10.0f, 20.0f);
   ImGui::SliderFloat("Delta Time", &dt_, 5.0f, 15.0f);
   ImGui::SliderFloat("Mu", &mu_, 0.14f, 0.7f);
   ImGui::SliderFloat("Sigma", &sigma_, 0.014f, 0.07f);
@@ -148,12 +148,20 @@ u32 LeniaOp::currentTexture() { return current_data_id_; }
 
 void LeniaOp::compileShaders()
 {
+  // Pre compute shader
+  /////////////////////////////////////////////////////////////////////////////
+  // std::string pre_lenia_string = LoadSourceFromFile(SHADER("ia/lenia op/counter_cs.glsl"));
+  // const char *pre_lenia_cs = pre_lenia_string.c_str();
+
+  // GLuint pre_compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, pre_lenia_cs, "lenia counter shader");
+  // pre_compute_program_ = GPUHelper::CreateProgram(pre_compute_shader, "lenia counter program");
+  /////////////////////////////////////////////////////////////////////////////
+
   // Compute shader
   /////////////////////////////////////////////////////////////////////////////
-  std::string lenia_string = LoadSourceFromFile(SHADER("ia/lenia/lenia_cs.glsl"));
+  std::string lenia_string = defines + LoadSourceFromFile(SHADER("ia/lenia op/lenia_op_cs.glsl"));
   const char *lenia_cs = lenia_string.c_str();
-
-  GLuint compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, lenia_cs, "lenia shader");
-  compute_program_ = GPUHelper::CreateProgram(compute_shader, "compute program");
+  GLuint compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, lenia_cs, "lenia op shader");
+  compute_program_ = GPUHelper::CreateProgram(compute_shader, "lenia op program");
   /////////////////////////////////////////////////////////////////////////////
 }

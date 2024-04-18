@@ -1,13 +1,3 @@
-#version 460 core
-
-#define C_WIDTH 512
-#define C_HEIGHT 512
-
-#define COUNTER_BIND 0
-#define INDICES_BIND 1
-#define CURR_IMG_BIND 2
-#define PREV_IMG_BIND 3
-
 layout (local_size_x = 1, local_size_y = C_WIDTH, local_size_z = 1) in;
 
 struct Counter

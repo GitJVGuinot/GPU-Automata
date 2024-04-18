@@ -1,6 +1,6 @@
 #include "ia/lenia.h"
 #include "ia/gpu_helper.h"
-#include "ia/binds.h"
+#include "ia/defines.h"
 
 Lenia::Lenia() {}
 
@@ -150,10 +150,10 @@ void Lenia::compileShaders()
 {
   // Compute shader
   /////////////////////////////////////////////////////////////////////////////
-  std::string lenia_string = LoadSourceFromFile(SHADER("ia/lenia/lenia_cs.glsl"));
+  std::string lenia_string = defines + LoadSourceFromFile(SHADER("ia/lenia/lenia_cs.glsl"));
   const char *lenia_cs = lenia_string.c_str();
 
   GLuint compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, lenia_cs, "lenia shader");
-  compute_program_ = GPUHelper::CreateProgram(compute_shader, "compute program");
+  compute_program_ = GPUHelper::CreateProgram(compute_shader, "lenia program");
   /////////////////////////////////////////////////////////////////////////////
 }

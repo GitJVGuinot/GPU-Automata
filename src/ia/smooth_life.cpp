@@ -1,20 +1,6 @@
 #include "ia/smooth_life.h"
 #include "ia/gpu_helper.h"
-#include "ia/binds.h"
-
-#define SECTORS 4
-
-#define O_RADIUS 12.0f
-#define I_RADIUS 1.44f
-
-#define NEAR_NEIGHBORS 6.0f
-
-#define DEPTH (static_cast<s32>(NEAR_NEIGHBORS + (O_RADIUS * SECTORS)))
-
-#define ARRAY_3D_INDEX(x, y, z, max_y, max_z)                               \
-  static_cast<u32>(x) * static_cast<u32>(max_y) * static_cast<u32>(max_z) + \
-      static_cast<u32>(y) * static_cast<u32>(max_z) +                       \
-      static_cast<u32>(z)
+#include "ia/defines.h"
 
 void CheckComputeResults(GLuint counter_ssbo, GLuint prev_data_id, u32 width, u32 height)
 {
@@ -39,7 +25,7 @@ void SmoothLife::init(Math::Vec2 win)
   height_ = static_cast<u32>(win.y);
   outter_rad_ = O_RADIUS;
   inner_rad_ = I_RADIUS;
-  depth_ = DEPTH;
+  depth_ = C_DEPTH;
 
   u_byte *data = reinterpret_cast<u_byte *>(std::calloc(width_ * height_ * 4, sizeof(u_byte)));
 
@@ -256,19 +242,19 @@ void SmoothLife::compileShaders()
 {
   // Pre Compute shader
   /////////////////////////////////////////////////////////////////////////////
-  std::string pre_compute = LoadSourceFromFile(SHADER("ia/smooth/counter_cs.glsl"));
+  std::string pre_compute = defines + LoadSourceFromFile(SHADER("ia/smooth/counter_cs.glsl"));
   const char *pre_compute_cs = pre_compute.c_str();
 
-  GLuint pre_compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, pre_compute_cs, "pre compute shader");
-  pre_compute_program_ = GPUHelper::CreateProgram(pre_compute_shader, "pre compute program");
+  GLuint pre_compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, pre_compute_cs, "pre smooth shader");
+  pre_compute_program_ = GPUHelper::CreateProgram(pre_compute_shader, "pre smooth program");
   /////////////////////////////////////////////////////////////////////////////
 
   // Compute shader
   /////////////////////////////////////////////////////////////////////////////
-  std::string smooth_string = LoadSourceFromFile(SHADER("ia/smooth/smooth_cs.glsl"));
+  std::string smooth_string = defines + LoadSourceFromFile(SHADER("ia/smooth/smooth_cs.glsl"));
   const char *smooth_cs = smooth_string.c_str();
 
-  GLuint compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, smooth_cs, "compute shader");
-  compute_program_ = GPUHelper::CreateProgram(compute_shader, "compute program");
+  GLuint compute_shader = GPUHelper::CompileShader(GL_COMPUTE_SHADER, smooth_cs, "smooth shader");
+  compute_program_ = GPUHelper::CreateProgram(compute_shader, "smoot program");
   /////////////////////////////////////////////////////////////////////////////
 }
