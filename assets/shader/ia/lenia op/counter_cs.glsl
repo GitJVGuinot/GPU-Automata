@@ -37,7 +37,7 @@ void main()
 
     float dist = distance(vec2(gid.xy), vec2(current_x, current_y)) / u_radius;
     float weight = GaussBell(dist, u_rho, u_omega);
-    float alpha =  imageLoad(prev_image, ivec2(gid.xy)).a;
+    float alpha =  imageLoad(prev_image, ivec2(current_x, gid.z)).a;
 
     sum += (alpha * weight);
     total += weight;
