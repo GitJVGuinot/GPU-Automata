@@ -3,10 +3,10 @@
 
 #define SCALAR_SIZE 4.0f // Only to render
 
-#define COUNTER_BIND 0
-#define INDICES_BIND 1
-#define CURR_IMG_BIND 2
-#define PREV_IMG_BIND 3
+#define PREV_IMG_BIND 0
+#define CURR_IMG_BIND 1
+#define COUNTER_BIND 2
+#define INDICES_BIND 3
 
 #define SECTORS 4
 
@@ -42,10 +42,10 @@ struct Counter
 const char defines[] = R"(
 #version 460
 
-#define COUNTER_BIND 0
-#define INDICES_BIND 1
-#define CURR_IMG_BIND 2
-#define PREV_IMG_BIND 3
+#define PREV_IMG_BIND 0
+#define CURR_IMG_BIND 1
+#define COUNTER_BIND 2
+#define INDICES_BIND 3
 
 #define SECTORS 4
 
