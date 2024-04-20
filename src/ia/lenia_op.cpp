@@ -4,6 +4,21 @@
 
 LeniaOp::LeniaOp() {}
 
+void CheckComputeResults(GLuint counter_ssbo, GLuint prev_data_id, u32 width, u32 depth, u32 height)
+{
+  // Use glGetNamedBufferSubData to retrieve data from the buffer for debugging
+  Counter* data = reinterpret_cast<Counter*>(std::calloc(width * height * depth, sizeof(Counter)));
+  glGetNamedBufferSubData(counter_ssbo, 0, width * height * depth * sizeof(Counter), data);
+
+  // Use glGetTexImage to retrieve data from the image for debugging
+  u_byte* prev_image_data = reinterpret_cast<u_byte*>(std::calloc(width * height * 4, sizeof(u_byte)));
+  glBindTexture(GL_TEXTURE_2D, prev_data_id);
+  glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, prev_image_data);
+
+  DESTROY(data);
+  DESTROY(prev_image_data);
+}
+
 void LeniaOp::init(Math::Vec2 win)
 {
   loops_ = 0;
@@ -65,16 +80,12 @@ void LeniaOp::update()
   
   GLenum error = GL_NO_ERROR;
 
-  // Binds
-  /////////////////////////////////////////////////////////////////////////////
-  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COUNTER_BIND, counter_ssbo_);
-  glBindImageTexture(CURR_IMG_BIND, current_data_id_, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-  glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
-  /////////////////////////////////////////////////////////////////////////////
-
   // GPU Counter
   /////////////////////////////////////////////////////////////////////////////
   glUseProgram(pre_compute_program_);
+  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COUNTER_BIND, counter_ssbo_);
+  glBindImageTexture(CURR_IMG_BIND, current_data_id_, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+  glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 
   glDispatchCompute(width_, height_, TOTAL_LINES(radius_));
   error = glGetError();
@@ -88,6 +99,9 @@ void LeniaOp::update()
   // GPU Automata
   /////////////////////////////////////////////////////////////////////////////
   glUseProgram(compute_program_);
+  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COUNTER_BIND, counter_ssbo_);
+  glBindImageTexture(CURR_IMG_BIND, current_data_id_, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+  glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 
   // Dispatch Compute Shader with appropriate workgroup sizes
   glDispatchCompute(width_, height_, 1);

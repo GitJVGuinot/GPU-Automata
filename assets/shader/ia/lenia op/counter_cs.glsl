@@ -17,33 +17,35 @@ void main()
 {
   ivec3 gid = ivec3(gl_GlobalInvocationID.xyz);
 
-  int current_y = (gid.z - u_radius);
-  // if(current_y < 0)
-  //   current_y = (C_HEIGHT - current_y);
-  // if(current_y >= C_HEIGHT)
-  //   current_y -= C_HEIGHT;
+  int local_y = (gid.z - u_radius);
+  int neighbour_y = (local_y + gid.y);
+  // if(neighbour_y < 0)
+  //   neighbour_y = (C_HEIGHT - neighbour_y);
+  // if(neighbour_y >= C_HEIGHT)
+  //   neighbour_y -= C_HEIGHT;
 
   int total_columns = TOTAL_COLUMNS(u_radius);
 
   float sum = 0.0;
   float total = 0.0;
-  for(int x = 0; x < total_columns; x++)
+  for(int local_x = -u_radius; local_x <= u_radius; local_x++)
   {
-    int current_x = (gid.x - u_radius);
-    // if(current_x < 0)
-    //   current_x = (C_HEIGHT - current_x);
-    // if(current_x >= C_HEIGHT)
-    //   current_x -= C_HEIGHT;
+    int neighbour_x = (local_x + gid.x);
+    // if(neighbour_x < 0)
+    //   neighbour_x = (C_HEIGHT - neighbour_x);
+    // if(neighbour_x >= C_HEIGHT)
+    //   neighbour_x -= C_HEIGHT;
 
-    float dist = distance(vec2(gid.xy), vec2(current_x, current_y)) / u_radius;
-    float weight = GaussBell(dist, u_rho, u_omega);
-    float alpha =  imageLoad(prev_image, ivec2(current_x, gid.z)).a;
+    float alpha = imageLoad(prev_image, ivec2(neighbour_x, neighbour_y)).a;
+
+    // float dist = distance(vec2(gid.xy), vec2(neighbor)) / u_radius;
+    float norm_rad = sqrt(float(local_x * local_x + local_y * local_y)) / u_radius;
+    float weight = GaussBell(norm_rad, u_rho, u_omega);
 
     sum += (alpha * weight);
     total += weight;
   }
 
   int index = ARRAY_3D_INDEX(gid.x, gid.y, gid.z, C_HEIGHT, MAX_RADIUS);
-  data_[index].live_ = sum;
-  data_[index].count_ = total;
+  data_[index] = Counter(sum, total);
 }

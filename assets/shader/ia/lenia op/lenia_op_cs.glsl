@@ -20,9 +20,8 @@ vec2 Convolution(ivec2 coords)
   for(int i = 0; i < total_lines; i++)
   {
     int index = ARRAY_3D_INDEX(coords.x, coords.y, i, C_HEIGHT, MAX_RADIUS);
-    Counter data = data_[index];
-    sum += data.live_;
-    total += data.count_;
+    sum += data_[index].live_;
+    total += data_[index].count_;
   }
   return vec2(sum, total);
 }

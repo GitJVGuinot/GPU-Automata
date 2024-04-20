@@ -1,4 +1,7 @@
-#define SCALAR_SIZE 2.5f // Only to render
+#ifndef __IA_DEFINES_H__
+#define __IA_DEFINES_H__
+
+#define SCALAR_SIZE 4.0f // Only to render
 
 #define COUNTER_BIND 0
 #define INDICES_BIND 1
@@ -24,11 +27,17 @@
       static_cast<u32>(y) * static_cast<u32>(max_z) +                       \
       static_cast<u32>(z)
 
+#define ARRAY_2D_INDEX(x, y, max_x)               \
+  static_cast<u32>(y) * static_cast<u32>(max_x) + \
+      static_cast<u32>(x)
+
 struct Counter
 {
-  float live_;
-  float count_;
+  f32 live_;
+  f32 count_;
 };
+
+#define GaussBell(x, m, s) (exp(-(x - m) * (x - m) / s / s / 2.0))
 
 const char defines[] = R"(
 #version 460
@@ -53,6 +62,7 @@ const char defines[] = R"(
 #define TOTAL_COLUMNS(rad) ((rad * 2) + 1)
 
 #define ARRAY_3D_INDEX(x, y, z, max_y, max_z) int((x *  max_y * max_z) + (y * max_z) + (z))
+#define ARRAY_2D_INDEX(x, y, max_x) int((y * max_x) + (x))
 
 struct Counter
 {
@@ -62,3 +72,5 @@ struct Counter
 
 float GaussBell(float x, float m, float s){ return exp(-(x - m) * (x - m) / s / s / 2.0); }
 )";
+
+#endif /* __IA_DEFINES_H__ */
