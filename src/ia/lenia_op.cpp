@@ -1,19 +1,78 @@
 #include "ia/lenia_op.h"
 #include "ia/gpu_helper.h"
-#include "ia/defines.h"
 
 LeniaOp::LeniaOp() {}
 
-void CheckComputeResults(GLuint counter_ssbo, GLuint prev_data_id, u32 width, u32 depth, u32 height)
+float LeniaOp::sumOriginal(Pixel* prev_img, u32 x, u32 y)
+{
+  Counter sum = { 0.0f, 0.0f };
+
+  for (s32 ny = -radius_; ny <= radius_; ny++)
+  {
+    for (s32 nx = -radius_; nx <= radius_; nx++)
+    {
+      Math::Vec2 neighbour = Math::Vec2(nx, ny) + Math::Vec2(x, y);
+      if (neighbour.y < 0)
+        neighbour.y = (C_HEIGHT - neighbour.y);
+      if (neighbour.y >= C_HEIGHT)
+        neighbour.y -= C_HEIGHT;
+
+      if (neighbour.x < 0)
+        neighbour.x = (C_WIDTH - neighbour.x);
+      if (neighbour.x >= C_WIDTH)
+        neighbour.x -= C_WIDTH;
+
+      float alpha = prev_img[ARRAY_2D_INDEX(neighbour.x, neighbour.y, C_WIDTH)].a;
+
+      float norm_rad = sqrt(float(x * x + y * y)) / radius_;
+      float weight = GaussBell(norm_rad, rho_, omega_);
+
+      sum.live_ += (alpha * weight);
+      sum.count_ += weight;
+    }
+  }
+
+  return sum.live_ / sum.count_;
+}
+
+float LeniaOp::sumCounter(Counter* counter, u32 x, u32 y)
+{
+  Counter sum = {0.0f, 0.0f};
+
+  for (u32 i = 0; i < TOTAL_LINES(radius_); i++)
+  {
+    u32 index = ARRAY_3D_INDEX(x, y, i, C_HEIGHT, MAX_RADIUS);
+    sum.live_ += counter[index].live_;
+    sum.count_ += counter[index].count_;
+  }
+
+  return sum.live_ / sum.count_;
+}
+
+void LeniaOp::checkSingleSlot(Counter *counter, Pixel *prev_img, u32 x, u32 y)
+{
+  float sum_original = sumOriginal(prev_img, x, y);
+  float sum_counter = sumCounter(counter, x, y);
+
+  assert(sum_original == sum_counter);
+}
+
+void LeniaOp::checkComputeResults()
 {
   // Use glGetNamedBufferSubData to retrieve data from the buffer for debugging
-  Counter* data = reinterpret_cast<Counter*>(std::calloc(width * height * depth, sizeof(Counter)));
-  glGetNamedBufferSubData(counter_ssbo, 0, width * height * depth * sizeof(Counter), data);
+  Counter* data = reinterpret_cast<Counter*>(std::calloc(width_ * height_ * MAX_RADIUS, sizeof(Counter)));
+  assert(data);
+  glGetNamedBufferSubData(counter_ssbo_, 0, width_ * height_ * MAX_RADIUS * sizeof(Counter), data);
 
   // Use glGetTexImage to retrieve data from the image for debugging
-  u_byte* prev_image_data = reinterpret_cast<u_byte*>(std::calloc(width * height * 4, sizeof(u_byte)));
-  glBindTexture(GL_TEXTURE_2D, prev_data_id);
+  Pixel* prev_image_data = reinterpret_cast<Pixel*>(std::calloc(width_ * height_, sizeof(Pixel)));
+  assert(prev_image_data);
+  glBindTexture(GL_TEXTURE_2D, prev_data_id_);
   glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, prev_image_data);
+
+  for (u32 y = 0; y < C_WIDTH; y++) 
+    for (u32 x = 0; x < C_HEIGHT; x++)
+      checkSingleSlot(data, prev_image_data, x, y);
 
   DESTROY(data);
   DESTROY(prev_image_data);

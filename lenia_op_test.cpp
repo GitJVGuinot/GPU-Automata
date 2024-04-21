@@ -155,9 +155,9 @@ void Step1()
         {
           int neighbour_x = (local_x + gid.x);
           if (neighbour_x < 0)
-            neighbour_x = (C_HEIGHT - neighbour_x);
-          if (neighbour_x >= C_HEIGHT)
-            neighbour_x -= C_HEIGHT;
+            neighbour_x = (C_WIDTH - neighbour_x);
+          if (neighbour_x >= C_WIDTH)
+            neighbour_x -= C_WIDTH;
 
           int neighbor_index = ARRAY_2D_INDEX(neighbour_x, neighbour_y, C_WIDTH);
 

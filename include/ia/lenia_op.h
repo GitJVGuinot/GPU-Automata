@@ -1,4 +1,5 @@
 #include "engine/engine.h"
+#include "defines.h"
 
 #ifndef __LENIA_OP_H__
 #define __LENIA_OP_H__ 1
@@ -26,6 +27,14 @@ public:
   float omega_;
   
 private:
+  struct Pixel
+  {
+    u_byte r, g, b, a;
+  };
+  float sumOriginal(Pixel* prev_img, u32 x, u32 y);
+  float sumCounter(Counter* counter, u32 x, u32 y);
+  void checkSingleSlot(Counter* counter, Pixel* prev_img, u32 x, u32 y);
+  void checkComputeResults();
   void compileShaders();
   void swap();
 
