@@ -49,7 +49,7 @@ const char defines[] = R"(
 
 #define SECTORS 4
 
-#define MAX_RADIUS 20.0
+#define MAX_RADIUS 20
 #define O_RADIUS 12.0
 #define I_RADIUS 1.44
 

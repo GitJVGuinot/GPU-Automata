@@ -160,7 +160,7 @@ void LeniaOp::update()
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
 
   glMemoryBarrier(GL_ALL_BARRIER_BITS);
-  checkComputeResults();
+  //checkComputeResults();
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////
 
