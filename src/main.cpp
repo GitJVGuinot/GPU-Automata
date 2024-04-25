@@ -27,7 +27,7 @@ static Mesh *quad = nullptr;
 static Material *img = nullptr;
 
 const static s32 max_modes = 3;
-static s32 mode = 3;
+static s32 mode = 0;
 static Conway conway;
 static SmoothLife smooth_life;
 static Lenia lenia;

@@ -66,6 +66,7 @@ void Conway::update()
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////
 
+  glFinish();
   update_timer_.stopTime();
 }
 

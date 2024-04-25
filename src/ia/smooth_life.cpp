@@ -176,6 +176,7 @@ void SmoothLife::update()
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////
 
+  glFinish();
   update_timer_.stopTime();
 }
 
@@ -184,7 +185,7 @@ void SmoothLife::imgui()
   ImGui::Begin("GPU Automata");
 
   ImGui::Text("Type - Smooth life");
-  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
+  ImGui::Text("Update time: %ld ms", update_timer_.getElapsedTime(TimeCont::Precision::milliseconds));
   ImGui::Text("Generation: %d", loops_);
 
   ImGui::Text("Radius: %.1f", O_RADIUS);

@@ -81,6 +81,7 @@ void Lenia::update()
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////
 
+  glFinish();
   update_timer_.stopTime();
 }
 
@@ -89,7 +90,7 @@ void Lenia::imgui()
   ImGui::Begin("GPU Automata");
 
   ImGui::Text("Type - Lenia");
-  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
+  ImGui::Text("Update time: %ld ms", update_timer_.getElapsedTime(TimeCont::Precision::milliseconds));
   ImGui::Text("Generation: %d", loops_);
 
   ImGui::SliderFloat("Radius", &radius_, 10.0f, 25.0f);
