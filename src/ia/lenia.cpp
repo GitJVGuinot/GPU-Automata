@@ -71,7 +71,7 @@ void Lenia::update()
   glUniform1f(glGetUniformLocation(compute_program_, "u_omega"), omega_);
 
   // Dispatch Compute Shader with appropriate workgroup sizes
-  glDispatchCompute(width_, height_, 1);
+  glDispatchCompute(width_ / X_THREADS, height_ / Y_THREADS, 1);
   error = glGetError();
   if (error != GL_NO_ERROR)
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
@@ -90,7 +90,7 @@ void Lenia::imgui()
   ImGui::Begin("GPU Automata");
 
   ImGui::Text("Type - Lenia");
-  ImGui::Text("Update time: %ld ms", update_timer_.getElapsedTime(TimeCont::Precision::milliseconds));
+  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
   ImGui::Text("Generation: %d", loops_);
 
   ImGui::SliderFloat("Radius", &radius_, 10.0f, 25.0f);

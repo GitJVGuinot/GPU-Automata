@@ -24,7 +24,7 @@ float LeniaOp::sumOriginal(Pixel* prev_img, u32 x, u32 y)
 
       float alpha = prev_img[ARRAY_2D_INDEX(neighbour.x, neighbour.y, C_WIDTH)].a;
 
-      float norm_rad = EuclidianDistance(nx,ny) / static_cast<float>(radius_);
+      float norm_rad = EuclidianDistance(static_cast<float>(nx), static_cast<float>(ny)) / static_cast<float>(radius_);
       float weight = GaussBell(norm_rad, rho_, omega_);
 
       sum.live_ += (alpha * weight);
@@ -154,7 +154,7 @@ void LeniaOp::update()
   glUniform1f(glGetUniformLocation(pre_compute_program_, "u_rho"), rho_);
   glUniform1f(glGetUniformLocation(pre_compute_program_, "u_omega"), omega_);
 
-  glDispatchCompute(width_, height_, TOTAL_LINES(radius_));
+  glDispatchCompute(width_, height_, 1);
   error = glGetError();
   if (error != GL_NO_ERROR)
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);

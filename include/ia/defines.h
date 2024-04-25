@@ -1,7 +1,7 @@
 #ifndef __IA_DEFINES_H__
 #define __IA_DEFINES_H__
 
-#define SCALAR_SIZE 4.0f // Only to render
+#define SCALAR_SIZE 1.5f // Only to render
 
 #define PREV_IMG_BIND 0
 #define CURR_IMG_BIND 1
@@ -16,8 +16,8 @@
 
 #define NEAR_NEIGHBORS 6
 
-#define C_WIDTH 512
-#define C_HEIGHT 512
+#define C_WIDTH 1024
+#define C_HEIGHT 1024
 #define C_DEPTH (static_cast<s32>(NEAR_NEIGHBORS + (O_RADIUS * SECTORS)))
 #define TOTAL_LINES(rad) (static_cast<u32>((rad * 2) + 1))
 #define TOTAL_COLUMNS(rad) (static_cast<u32>((rad * 2) + 1))
@@ -40,9 +40,16 @@ struct Counter
 #define GaussBell(x, m, s) (expf(-(x - m) * (x - m) / s / s / 2.0f))
 #define EuclidianDistance(x, y) (sqrtf(x * x + y * y))
 
+#define X_THREADS 8
+#define Y_THREADS 4 // Change to 8 for AMD
+#define Z_THREADS 1
 
 const char defines[] = R"(
 #version 460
+
+#define X_THREADS 8
+#define Y_THREADS 4 // Change to 8 for AMD
+#define Z_THREADS 1
 
 #define PREV_IMG_BIND 0
 #define CURR_IMG_BIND 1
@@ -57,8 +64,8 @@ const char defines[] = R"(
 
 #define NEAR_NEIGHBORS 6
 
-#define C_WIDTH 512
-#define C_HEIGHT 512
+#define C_WIDTH 1024
+#define C_HEIGHT 1024
 #define C_DEPTH int(NEAR_NEIGHBORS + (O_RADIUS * SECTORS))
 #define TOTAL_LINES(rad) ((rad * 2) + 1)
 #define TOTAL_COLUMNS(rad) ((rad * 2) + 1)

@@ -56,7 +56,7 @@ void Conway::update()
   glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 
   // Dispatch Compute Shader with appropriate workgroup sizes
-  glDispatchCompute(width_, height_, 1);
+  glDispatchCompute(width_ / X_THREADS, height_ / Y_THREADS, 1);
   error = glGetError();
   if (error != GL_NO_ERROR)
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);

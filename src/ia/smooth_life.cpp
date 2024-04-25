@@ -146,7 +146,7 @@ void SmoothLife::update()
   glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 
   // Dispatch Compute Shader with appropriate workgroup sizes
-  glDispatchCompute(width_, 1, 1);
+  glDispatchCompute(1, height_, 1);
   error = glGetError();
   if (error != GL_NO_ERROR)
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
@@ -166,7 +166,7 @@ void SmoothLife::update()
   glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 
   // Dispatch Compute Shader with appropriate workgroup sizes
-  glDispatchCompute(width_, height_, 1);
+  glDispatchCompute(width_ / X_THREADS, height_ / Y_THREADS, 1);
   error = glGetError();
   if (error != GL_NO_ERROR)
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
@@ -185,7 +185,7 @@ void SmoothLife::imgui()
   ImGui::Begin("GPU Automata");
 
   ImGui::Text("Type - Smooth life");
-  ImGui::Text("Update time: %ld ms", update_timer_.getElapsedTime(TimeCont::Precision::milliseconds));
+  ImGui::Text("Update time: %ld mcs", update_timer_.getElapsedTime(TimeCont::Precision::microseconds));
   ImGui::Text("Generation: %d", loops_);
 
   ImGui::Text("Radius: %.1f", O_RADIUS);

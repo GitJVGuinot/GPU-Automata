@@ -1,4 +1,4 @@
-layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+layout (local_size_x = X_THREADS, local_size_y = Y_THREADS, local_size_z = 1) in;
 
 layout (binding = CURR_IMG_BIND, rgba8) writeonly uniform image2D current_image;
 layout (binding = PREV_IMG_BIND, rgba8) readonly uniform image2D prev_image;
