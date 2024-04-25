@@ -154,7 +154,7 @@ void LeniaOp::update()
   glUniform1f(glGetUniformLocation(pre_compute_program_, "u_rho"), rho_);
   glUniform1f(glGetUniformLocation(pre_compute_program_, "u_omega"), omega_);
 
-  glDispatchCompute(width_, height_, 1);
+  glDispatchCompute(width_ / X_THREADS, height_ / Y_THREADS, TOTAL_LINES(radius_));
   error = glGetError();
   if (error != GL_NO_ERROR)
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
@@ -176,7 +176,7 @@ void LeniaOp::update()
   glUniform1f(glGetUniformLocation(compute_program_, "u_omega"), omega_);
 
   // Dispatch Compute Shader with appropriate workgroup sizes
-  glDispatchCompute(width_, height_, 1);
+  glDispatchCompute(width_ / X_THREADS, height_ / Y_THREADS, 1);
   error = glGetError();
   if (error != GL_NO_ERROR)
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);

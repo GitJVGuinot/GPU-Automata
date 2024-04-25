@@ -1,7 +1,7 @@
 #ifndef __IA_DEFINES_H__
 #define __IA_DEFINES_H__
 
-#define SCALAR_SIZE 1.5f // Only to render
+#define SCALAR_SIZE 2.0f // Only to render
 
 #define PREV_IMG_BIND 0
 #define CURR_IMG_BIND 1

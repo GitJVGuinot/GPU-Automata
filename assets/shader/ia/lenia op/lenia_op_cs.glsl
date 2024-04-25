@@ -1,4 +1,4 @@
-layout (local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+layout (local_size_x = X_THREADS, local_size_y = Y_THREADS, local_size_z = 1) in;
 
 layout (binding = COUNTER_BIND, std430) buffer CounterBlock { Counter data_[]; };
 
