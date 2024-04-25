@@ -63,6 +63,13 @@ void Lenia::update()
   glBindImageTexture(CURR_IMG_BIND, current_data_id_, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
   glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 
+  glUniform1f(glGetUniformLocation(compute_program_, "u_radius"), radius_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_dt"), dt_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_mu"), mu_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_sigma"), sigma_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_rho"), rho_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_omega"), omega_);
+
   // Dispatch Compute Shader with appropriate workgroup sizes
   glDispatchCompute(width_, height_, 1);
   error = glGetError();
@@ -70,13 +77,6 @@ void Lenia::update()
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
 
   glMemoryBarrier(GL_ALL_BARRIER_BITS);
-
-  glUniform1f(glGetUniformLocation(compute_program_, "u_radius"), radius_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_dt"), dt_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_mu"), mu_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_sigma"), sigma_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_rho"), rho_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_omega"), omega_);
 
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////

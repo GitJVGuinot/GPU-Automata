@@ -136,16 +136,23 @@ void LeniaOp::update()
   loops_++;
 
   swap();
-  reset();
   
   GLenum error = GL_NO_ERROR;
+
+  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COUNTER_BIND, counter_ssbo_);
+  glBindImageTexture(CURR_IMG_BIND, current_data_id_, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+  glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
 
   // GPU Counter
   /////////////////////////////////////////////////////////////////////////////
   glUseProgram(pre_compute_program_);
-  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COUNTER_BIND, counter_ssbo_);
-  glBindImageTexture(CURR_IMG_BIND, current_data_id_, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-  glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+
+  glUniform1i(glGetUniformLocation(pre_compute_program_, "u_radius"), radius_);
+  glUniform1f(glGetUniformLocation(pre_compute_program_, "u_dt"), dt_);
+  glUniform1f(glGetUniformLocation(pre_compute_program_, "u_mu"), mu_);
+  glUniform1f(glGetUniformLocation(pre_compute_program_, "u_sigma"), sigma_);
+  glUniform1f(glGetUniformLocation(pre_compute_program_, "u_rho"), rho_);
+  glUniform1f(glGetUniformLocation(pre_compute_program_, "u_omega"), omega_);
 
   glDispatchCompute(width_, height_, TOTAL_LINES(radius_));
   error = glGetError();
@@ -160,9 +167,13 @@ void LeniaOp::update()
   // GPU Automata
   /////////////////////////////////////////////////////////////////////////////
   glUseProgram(compute_program_);
-  glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COUNTER_BIND, counter_ssbo_);
-  glBindImageTexture(CURR_IMG_BIND, current_data_id_, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
-  glBindImageTexture(PREV_IMG_BIND, prev_data_id_, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RGBA8);
+
+  glUniform1i(glGetUniformLocation(compute_program_, "u_radius"), radius_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_dt"), dt_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_mu"), mu_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_sigma"), sigma_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_rho"), rho_);
+  glUniform1f(glGetUniformLocation(compute_program_, "u_omega"), omega_);
 
   // Dispatch Compute Shader with appropriate workgroup sizes
   glDispatchCompute(width_, height_, 1);
@@ -171,13 +182,6 @@ void LeniaOp::update()
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
 
   glMemoryBarrier(GL_ALL_BARRIER_BITS);
-
-  glUniform1i(glGetUniformLocation(compute_program_, "u_radius"), radius_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_dt"), dt_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_mu"), mu_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_sigma"), sigma_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_rho"), rho_);
-  glUniform1f(glGetUniformLocation(compute_program_, "u_omega"), omega_);
 
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////

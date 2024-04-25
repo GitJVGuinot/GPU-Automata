@@ -30,7 +30,6 @@ void main()
 {
   // Obtener el color previo
   ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
-  vec4 currentColor = imageLoad(prev_image, texelCoord);
 
   vec2 conv = Convolution(texelCoord);
 

@@ -36,16 +36,15 @@ void main()
     if (neighbour_x >= C_WIDTH)
       neighbour_x -= C_WIDTH;
 
-    float alpha = imageLoad(prev_image, ivec2(neighbour_x, neighbour_y)).a;
+    float neighbour_alpha = imageLoad(prev_image, ivec2(neighbour_x, neighbour_y)).a;
 
     float norm_rad = sqrt(local_x * local_x + local_y * local_y) / u_radius;
     float weight = GaussBell(norm_rad, u_rho, u_omega);
     
-    sum += (alpha * weight);
+    sum += (neighbour_alpha * weight);
     total += weight;
   }
   
   int index = ARRAY_3D_INDEX(gid.x, gid.y, gid.z, C_HEIGHT, MAX_RADIUS);
-  data_[index].live_ = sum;
-  data_[index].count_ = total;
+  data_[index] = Counter(sum, total);
 }
