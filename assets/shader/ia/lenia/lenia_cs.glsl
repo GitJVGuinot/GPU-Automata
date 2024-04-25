@@ -19,9 +19,19 @@ vec2 Convolution(ivec2 coords)
     for(int y = -int(u_radius); y <= int(u_radius); y++)
     {
       vec2 neighbord_texel = (coords + ivec2(x,y));
+      if (neighbord_texel.y < 0)
+        neighbord_texel.y = C_HEIGHT + neighbord_texel.y;
+      if (neighbord_texel.y >= C_HEIGHT)
+        neighbord_texel.y -= C_HEIGHT;
+
+      if (neighbord_texel.x < 0)
+        neighbord_texel.x = C_WIDTH + neighbord_texel.x;
+      if (neighbord_texel.x >= C_WIDTH)
+        neighbord_texel.x -= C_WIDTH;
+
       float alpha =  imageLoad(prev_image, ivec2(neighbord_texel)).a;
 
-      float norm_rad = sqrt(float(x * x + y * y)) / u_radius;
+      float norm_rad = EuclidianDistance(x, y) / u_radius;
       float weight = GaussBell(norm_rad, u_rho, u_omega);
       
       sum += (alpha * weight);

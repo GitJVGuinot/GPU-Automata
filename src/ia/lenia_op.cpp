@@ -13,18 +13,18 @@ float LeniaOp::sumOriginal(Pixel* prev_img, u32 x, u32 y)
     {
       Math::Vec2 neighbour = Math::Vec2(static_cast<float>(nx), static_cast<float>(ny)) + Math::Vec2(static_cast<float>(x), static_cast<float>(y));
       if (neighbour.y < 0)
-        neighbour.y = (C_HEIGHT - neighbour.y);
+        neighbour.y = (C_HEIGHT + neighbour.y);
       if (neighbour.y >= C_HEIGHT)
         neighbour.y -= C_HEIGHT;
 
       if (neighbour.x < 0)
-        neighbour.x = (C_WIDTH - neighbour.x);
+        neighbour.x = (C_WIDTH + neighbour.x);
       if (neighbour.x >= C_WIDTH)
         neighbour.x -= C_WIDTH;
 
       float alpha = prev_img[ARRAY_2D_INDEX(neighbour.x, neighbour.y, C_WIDTH)].a;
 
-      float norm_rad = sqrtf(float(x * x + y * y)) / static_cast<float>(radius_);
+      float norm_rad = EuclidianDistance(nx,ny) / static_cast<float>(radius_);
       float weight = GaussBell(norm_rad, rho_, omega_);
 
       sum.live_ += (alpha * weight);

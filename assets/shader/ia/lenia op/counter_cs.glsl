@@ -20,7 +20,7 @@ void main()
   int local_y = (gid.z - u_radius);
   int neighbour_y = (local_y + gid.y);
   if (neighbour_y < 0)
-    neighbour_y = (C_HEIGHT - neighbour_y);
+    neighbour_y = (C_HEIGHT + neighbour_y);
   if (neighbour_y >= C_HEIGHT)
     neighbour_y -= C_HEIGHT;
 
@@ -32,13 +32,13 @@ void main()
   {
     int neighbour_x = (local_x + gid.x);
     if (neighbour_x < 0)
-      neighbour_x = (C_WIDTH - neighbour_x);
+      neighbour_x = (C_WIDTH + neighbour_x);
     if (neighbour_x >= C_WIDTH)
       neighbour_x -= C_WIDTH;
 
     float neighbour_alpha = imageLoad(prev_image, ivec2(neighbour_x, neighbour_y)).a;
 
-    float norm_rad = sqrt(local_x * local_x + local_y * local_y) / u_radius;
+    float norm_rad = EuclidianDistance(local_x, local_y) / u_radius;
     float weight = GaussBell(norm_rad, u_rho, u_omega);
     
     sum += (neighbour_alpha * weight);

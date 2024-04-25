@@ -38,6 +38,8 @@ struct Counter
 };
 
 #define GaussBell(x, m, s) (expf(-(x - m) * (x - m) / s / s / 2.0f))
+#define EuclidianDistance(x, y) (sqrtf(x * x + y * y))
+
 
 const char defines[] = R"(
 #version 460
@@ -70,7 +72,8 @@ struct Counter
   float count_;
 };
 
-float GaussBell(float x, float m, float s){ return exp(-(x - m) * (x - m) / s / s / 2.0); }
+#define GaussBell(x, m, s) (exp(-(x - m) * (x - m) / s / s / 2.0f))
+#define EuclidianDistance(x, y) (sqrt(x * x + y * y))
 )";
 
 #endif /* __IA_DEFINES_H__ */

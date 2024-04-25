@@ -19,6 +19,7 @@
       static_cast<unsigned>(x)
 
 #define GaussBell(x, m, s) (expf(-(x - m) * (x - m) / s / s / 2.0f))
+#define EuclidianDistance(x, y)  (sqrtf(x * x + y * y))
 
 typedef struct
 {
@@ -65,8 +66,6 @@ float clamp(float value, float min_value, float max_value)
   return value;
 }
 
-float EuclidianDistance(float x, float y) { return sqrtf(x * x + y * y); }
-
 void InitPrevImage()
 {
   float alive = 255.0f;
@@ -85,11 +84,11 @@ Vec2 OriginalConvolution(Vec2 coords)
       Vec2 neighbord_texel = (coords + Vec2{(float)(x), (float)(y)});
 
       if (neighbord_texel.y < 0)
-        neighbord_texel.y = (C_HEIGHT - neighbord_texel.y);
+        neighbord_texel.y = (C_HEIGHT + neighbord_texel.y);
       if (neighbord_texel.y >= C_HEIGHT)
         neighbord_texel.y -= C_HEIGHT;
       if (neighbord_texel.x < 0)
-        neighbord_texel.x = (C_HEIGHT - neighbord_texel.x);
+        neighbord_texel.x = (C_HEIGHT + neighbord_texel.x);
       if (neighbord_texel.x >= C_HEIGHT)
         neighbord_texel.x -= C_HEIGHT;
 
@@ -144,7 +143,7 @@ void Step1()
         int local_y = (gid.z - u_radius);
         int neighbour_y = (local_y + gid.y);
         if (neighbour_y < 0)
-          neighbour_y = (C_HEIGHT - neighbour_y);
+          neighbour_y = (C_HEIGHT + neighbour_y);
         if (neighbour_y >= C_HEIGHT)
           neighbour_y -= C_HEIGHT;
 
@@ -156,7 +155,7 @@ void Step1()
         {
           int neighbour_x = (local_x + gid.x);
           if (neighbour_x < 0)
-            neighbour_x = (C_WIDTH - neighbour_x);
+            neighbour_x = (C_WIDTH + neighbour_x);
           if (neighbour_x >= C_WIDTH)
             neighbour_x -= C_WIDTH;
 
