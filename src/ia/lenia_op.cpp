@@ -11,7 +11,7 @@ float LeniaOp::sumOriginal(Pixel* prev_img, u32 x, u32 y)
   {
     for (s32 nx = -radius_; nx <= radius_; nx++)
     {
-      Math::Vec2 neighbour = Math::Vec2(nx, ny) + Math::Vec2(x, y);
+      Math::Vec2 neighbour = Math::Vec2(static_cast<float>(nx), static_cast<float>(ny)) + Math::Vec2(static_cast<float>(x), static_cast<float>(y));
       if (neighbour.y < 0)
         neighbour.y = (C_HEIGHT - neighbour.y);
       if (neighbour.y >= C_HEIGHT)
@@ -24,7 +24,7 @@ float LeniaOp::sumOriginal(Pixel* prev_img, u32 x, u32 y)
 
       float alpha = prev_img[ARRAY_2D_INDEX(neighbour.x, neighbour.y, C_WIDTH)].a;
 
-      float norm_rad = sqrt(float(x * x + y * y)) / radius_;
+      float norm_rad = sqrtf(float(x * x + y * y)) / static_cast<float>(radius_);
       float weight = GaussBell(norm_rad, rho_, omega_);
 
       sum.live_ += (alpha * weight);

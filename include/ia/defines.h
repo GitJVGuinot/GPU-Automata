@@ -37,7 +37,7 @@ struct Counter
   f32 count_;
 };
 
-#define GaussBell(x, m, s) (exp(-(x - m) * (x - m) / s / s / 2.0))
+#define GaussBell(x, m, s) (expf(-(x - m) * (x - m) / s / s / 2.0f))
 
 const char defines[] = R"(
 #version 460
