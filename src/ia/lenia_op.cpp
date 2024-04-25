@@ -136,6 +136,7 @@ void LeniaOp::update()
   loops_++;
 
   swap();
+  reset();
   
   GLenum error = GL_NO_ERROR;
 
@@ -152,6 +153,7 @@ void LeniaOp::update()
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
 
   glMemoryBarrier(GL_ALL_BARRIER_BITS);
+  checkComputeResults();
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <cmath>
 
 #define MAX_RADIUS 20
 
@@ -17,7 +18,7 @@
   static_cast<unsigned>(y) * static_cast<unsigned>(max_x) + \
       static_cast<unsigned>(x)
 
-#define GaussBell(x, m, s) (exp(-(x - m) * (x - m) / s / s / 2.0))
+#define GaussBell(x, m, s) (expf(-(x - m) * (x - m) / s / s / 2.0f))
 
 typedef struct
 {
@@ -64,7 +65,7 @@ float clamp(float value, float min_value, float max_value)
   return value;
 }
 
-float EuclidianDistance(float x, float y) { return sqrt(x * x + y * y); }
+float EuclidianDistance(float x, float y) { return sqrtf(x * x + y * y); }
 
 void InitPrevImage()
 {
@@ -119,11 +120,11 @@ void OriginalLenia()
 
       float avg = conv.x / conv.y;
 
-      float growth = (GaussBell(avg, u_mu, u_sigma) * 2.0) - 1.0;
+      float growth = (GaussBell(avg, u_mu, u_sigma) * 2.0f) - 1.0f;
 
       float value = prev_color.a;
 
-      float c = clamp(value + (1.0 / u_dt) * growth, 0.0, 1.0);
+      float c = clamp(value + (1.0f / u_dt) * growth, 0.0f, 1.0f);
 
       original_image[index].a = c;
     }
@@ -204,11 +205,11 @@ void Step2()
 
       float avg = conv.x / conv.y;
 
-      float growth = (GaussBell(avg, u_mu, u_sigma) * 2.0) - 1.0;
+      float growth = (GaussBell(avg, u_mu, u_sigma) * 2.0f) - 1.0f;
 
       float value = prev_image[current_index].a;
 
-      float c = clamp(value + (1.0 / u_dt) * growth, 0.0, 1.0);
+      float c = clamp(value + (1.0f / u_dt) * growth, 0.0f, 1.0f);
 
       divided_image[current_index].a = c;
     }
@@ -243,6 +244,6 @@ int main(int, char **)
     assert(check);
   }
 
-  fprintf(stdout, "All correct");
+  fprintf(stdout, "All correct\n");
   return 0;
 }
