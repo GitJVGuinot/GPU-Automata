@@ -1,7 +1,7 @@
 #ifndef __IA_DEFINES_H__
 #define __IA_DEFINES_H__
 
-#define SCALAR_SIZE 2.0f // Only to render
+#define SCALAR_SIZE 1.0f // Only to render
 
 #define PREV_IMG_BIND 0
 #define CURR_IMG_BIND 1
@@ -41,14 +41,14 @@ struct Counter
 #define EuclidianDistance(x, y) (sqrtf(x * x + y * y))
 
 #define X_THREADS 8
-#define Y_THREADS 4 // Change to 8 for AMD
+#define Y_THREADS 8 // May need to be 4
 #define Z_THREADS 1
 
 const char defines[] = R"(
 #version 460
 
 #define X_THREADS 8
-#define Y_THREADS 4 // Change to 8 for AMD
+#define Y_THREADS 8 // May need to be 4
 #define Z_THREADS 1
 
 #define PREV_IMG_BIND 0
