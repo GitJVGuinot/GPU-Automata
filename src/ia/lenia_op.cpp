@@ -3,9 +3,9 @@
 
 LeniaOp::LeniaOp() {}
 
-float LeniaOp::sumOriginal(Pixel* prev_img, u32 x, u32 y)
+float LeniaOp::sumOriginal(Pixel *prev_img, u32 x, u32 y)
 {
-  Counter sum = { 0.0f, 0.0f };
+  Counter sum = {0.0f, 0.0f};
 
   for (s32 ny = -radius_; ny <= radius_; ny++)
   {
@@ -35,7 +35,7 @@ float LeniaOp::sumOriginal(Pixel* prev_img, u32 x, u32 y)
   return sum.live_ / sum.count_;
 }
 
-float LeniaOp::sumCounter(Counter* counter, u32 x, u32 y)
+float LeniaOp::sumCounter(Counter *counter, u32 x, u32 y)
 {
   Counter sum = {0.0f, 0.0f};
 
@@ -49,6 +49,7 @@ float LeniaOp::sumCounter(Counter* counter, u32 x, u32 y)
   return sum.live_ / sum.count_;
 }
 
+#if defined(DEBUG)
 void LeniaOp::checkSingleSlot(Counter *counter, Pixel *prev_img, u32 x, u32 y)
 {
   float sum_original = sumOriginal(prev_img, x, y);
@@ -56,21 +57,24 @@ void LeniaOp::checkSingleSlot(Counter *counter, Pixel *prev_img, u32 x, u32 y)
 
   assert(sum_original == sum_counter);
 }
+#else
+void LeniaOp::checkSingleSlot(Counter *, Pixel *, u32, u32) {}
+#endif
 
 void LeniaOp::checkComputeResults()
 {
   // Use glGetNamedBufferSubData to retrieve data from the buffer for debugging
-  Counter* data = reinterpret_cast<Counter*>(std::calloc(width_ * height_ * MAX_RADIUS, sizeof(Counter)));
+  Counter *data = reinterpret_cast<Counter *>(std::calloc(width_ * height_ * MAX_RADIUS, sizeof(Counter)));
   assert(data);
   glGetNamedBufferSubData(counter_ssbo_, 0, width_ * height_ * MAX_RADIUS * sizeof(Counter), data);
 
   // Use glGetTexImage to retrieve data from the image for debugging
-  Pixel* prev_image_data = reinterpret_cast<Pixel*>(std::calloc(width_ * height_, sizeof(Pixel)));
+  Pixel *prev_image_data = reinterpret_cast<Pixel *>(std::calloc(width_ * height_, sizeof(Pixel)));
   assert(prev_image_data);
   glBindTexture(GL_TEXTURE_2D, prev_data_id_);
   glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, prev_image_data);
 
-  for (u32 y = 0; y < C_WIDTH; y++) 
+  for (u32 y = 0; y < C_WIDTH; y++)
     for (u32 x = 0; x < C_HEIGHT; x++)
       checkSingleSlot(data, prev_image_data, x, y);
 
@@ -136,7 +140,7 @@ void LeniaOp::update()
   loops_++;
 
   swap();
-  
+
   GLenum error = GL_NO_ERROR;
 
   glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COUNTER_BIND, counter_ssbo_);
@@ -160,7 +164,7 @@ void LeniaOp::update()
     fprintf(stderr, "Compute Shader Dispatch Error: %d\n", error);
 
   glMemoryBarrier(GL_ALL_BARRIER_BITS);
-  //checkComputeResults();
+  // checkComputeResults();
   glUseProgram(0);
   /////////////////////////////////////////////////////////////////////////////
 

@@ -77,7 +77,7 @@ void UserUpdate(void *)
 {
   frames++;
 
-  u32 texture_id;
+  u32 texture_id = (u32)(-1);
   if (mode == 0)
   {
     conway.update();
